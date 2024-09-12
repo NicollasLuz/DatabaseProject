@@ -50,7 +50,6 @@ const Form = () => {
               </button>
               <button className="button2">Cadastrar</button>
             </div>
-
           </form>
         </div>
       </div>
@@ -59,11 +58,11 @@ const Form = () => {
 };
 
 const StyledWrapper = styled.div`
-  width: 100vw; /* Define a largura para ocupar toda a tela */
-  height: 100vh; /* Define a altura para ocupar toda a tela */
+  width: 100vw; 
+  height: 100vh;
   display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
+  justify-content: center;
+  align-items: center;
 
   .form {
     display: flex;
@@ -72,7 +71,7 @@ const StyledWrapper = styled.div`
     padding-left: 2em;
     padding-right: 2em;
     padding-bottom: 1.5em;
-    background-color: #171717;
+    background-color: #424242;
     border-radius: 20px;
   }
 
@@ -154,7 +153,7 @@ const StyledWrapper = styled.div`
   }
 
   .card {
-    background-image: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
+    background-image: linear-gradient(163deg, #00ff75 0%, #d400ff 100%);
     border-radius: 22px;
     transition: all 0.3s;
   }
