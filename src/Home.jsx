@@ -1,41 +1,60 @@
 import { useNavigate } from 'react-router-dom'
-import React, { useState} from 'react'
+import { useState} from 'react'
 import './App.css';
+import axios from 'axios';
 
 function Home() {
   const navigate = useNavigate();
 
-  const [nome, setNome] = useState('')
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const handleLogin = () => {
     // Pegue o valor do campo nome diretamente
-    const nome = document.querySelector('input[placeholder="Nome"]').value;
+    const name = document.querySelector('input[placeholder="Nome"]').value;
   
-    if (nome === '') {
+    if (name === '') {
       alert('Por favor, insira o nome!');
       return; // Impede a navegação se o nome estiver vazio
+    }    
+    if (email === ''){
+      alert('Por favor, insira o e-mail!');
     }
     if (password === ''){
         alert('Por favor, insira a senha!');
         return;
     }
-    if (email === ''){
-        alert('Por favor, insira o e-mail!');
-    }
 
     //Aqui é onde vai botar os trem da APi
-  
-    // Caso o nome seja válido, navega para a página "Inside"
-    navigate('/about');
+    if(name === 'admin' && email === 'admin@admin.com' && password === 'admin'){
+      navigate("/admin");
+    } else {
+      // Caso o nome seja válido, navega para a página "Inside"
+      navigate('/about');
+    }
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Dados antes do envio:", { name, email, password });
+    axios.post('http://localhost:8080/connection.php', { name, email, password })
+        .then(response => {
+            alert('Dados enviados com sucesso!');
+        })
+        .catch(error => {
+            console.error('Erro ao enviar dados:', error);
+            alert('Erro ao enviar dados!');
+        });
+};
+
 
   return (
     <div className="wrapper">
       <div className="card">
         <div className="card2">
           <form className="form">
+
             <p id="heading">Cadastro de usuário</p>
 
             <div className="field">
@@ -55,9 +74,9 @@ function Home() {
                 className="input-field"
                 placeholder="Nome"
                 autoComplete="off"
-                value={nome}
+                value={name}
                     onChange={(e) => {
-                        setNome(e.target.value)
+                        setName(e.target.value)
                     }}
               />
             </div>
@@ -116,7 +135,7 @@ function Home() {
               >
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               </button>
-              <button type="button" className="button2">
+              <button type="submit" className="button2" onClick={handleSubmit}>
                 Cadastrar
               </button>
             </div>
