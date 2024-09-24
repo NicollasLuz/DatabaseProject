@@ -1,33 +1,36 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "usbw";
-$dbname = "react_localhost";
+  // Conexão com o banco de dados
+  $servername = "localhost:8080";
+  $username = "root";
+  $password = "usbw";
+  $database = "react_localhost";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+  $conn = new mysqli($servername, $username, $password, $database);
 
-if ($conn->connect_error) {
-    die("Erro de conexão: " . $conn->connect_error);
-}
+  // Verificar conexão
+  if ($conn->connect_error) {
+    die("A conexão falhou: " . $conn->connect_error);
+  }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $data = json_decode(file_get_contents("php://input"), true);
-    $name = isset($data['nome']) ? $conn->real_escape_string($data['nome']) : '';
-    $email = isset($data['email']) ? $conn->real_escape_string($data['email']) : '';
-    $password = isset($data['senha']) ? $conn->real_escape_string($data['senha']) : '';
+  // Verificar o método de requisição
+  $method = $_SERVER['REQUEST_METHOD'];
 
-    if (!empty($name) && !empty($email) && !empty($password)) {
-        $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')";
+  switch ($method) {
+    case 'POST':
+      // Lógica para lidar com requisições POST
+      $name = $_POST['name'];
+      $email = $_POST['email'];
+      $password = $_POST['password'];
 
-        if ($conn->query($sql) === TRUE) {
-            echo json_encode(array("message" => "Dados inseridos com sucesso!"));
-        } else {
-            echo json_encode(array("message" => "Erro ao inserir os dados: " . $conn->error));
-        }
-    } else {
-        echo json_encode(array("message" => "Todos os campos são obrigatórios!"));
-    }
+      // Inserir dados no banco de dados
+      $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')";
+      if ($conn->query($sql) === TRUE) {
+        echo json_encode(array('message' => 'Dados salvos com sucesso'));
+      } else {
+        echo json_encode(array('message' => 'Erro ao salvar dados'));
+      }
+      break;
+  }
 
-    $conn->close();
-}
+  $conn->close();
 ?>
